@@ -2,15 +2,16 @@
 
 use DDD\Creneau;
 use \PHPUnit\Framework\TestCase;
-require __DIR__ . "/../Creneau.php";
+require __DIR__ . "/../src/Creneau.php";
 
-class CreneauTest extends TestCase {
+class CreneauTest extends TestCase
+{
 
     private $creneau;
 
     public function setUp(): void
     {
-        $this->creneau = new Creneau(1582450200, 2);
+        $this->creneau = new Creneau(1582450200, 2);    // 1582450200 = Sunday, February 23, 2020 10:30:00 AM
     }
 
     // début < fin
