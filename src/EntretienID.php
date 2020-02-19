@@ -1,8 +1,8 @@
 <?php
 
-namespace DDD;
+namespace PlanificationEntretien;
 
-class EntretienID
+final class EntretienID
 {
     private $id;
 

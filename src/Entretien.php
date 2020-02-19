@@ -1,9 +1,11 @@
 <?php
 
-namespace DDD;
+namespace PlanificationEntretien;
 
-use DDD\Creneau;
-use DDD\EntretienID;
+use PlanificationEntretien\Creneau;
+use PlanificationEntretien\EntretienID;
+use PlanificationEntretien\Candidat;
+use PlanificationEntretien\ConsultantRecruteur;
 
 class Entretien
 {
@@ -18,12 +20,12 @@ class Entretien
     private $candidat;
     private $raison;
 
-    public function __construct($creneau, $recruteur, $candidat)
+    public function __construct($creneau, $candidat)
     {
         $this->id        = new EntretienID();
         $this->statut    = self::PLANIFIE;
         $this->creneau   = $creneau;
-        $this->recruteur = $recruteur;
+        $this->recruteur = new ConsultantRecruteur();
         $this->candidat  = $candidat;
         $this->raison    = null;
     }
@@ -43,12 +45,12 @@ class Entretien
         return $this->creneau;
     }
 
-    public function getRecruteur()
+    public function getRecruteur(): ConsultantRecruteur
     {
         return $this->recruteur;
     }
 
-    public function getCandidat()
+    public function getCandidat(): Candidat
     {
         return $this->candidat;
     }

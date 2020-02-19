@@ -1,8 +1,8 @@
 <?php
 
-namespace DDD;
+namespace PlanificationEntretien;
 
-class Creneau {
+final class Creneau {
 
     private $date;
     private $heureDebut;
