@@ -4,6 +4,8 @@ Branche `entretien` : Entretien.php
 
 Branche `aggregats` : Exercice sur les aggrégats 
 
+Branche `ScreamingArchitecture` : Screaming Architecture
+
 Pour installer PhpUnit en local, lancer 
 ```bash
 composer install

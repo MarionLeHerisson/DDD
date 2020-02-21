@@ -1,8 +1,8 @@
 <?php
 
-use DDD\Creneau;
+use PlanificationEntretien\Creneau;
 use \PHPUnit\Framework\TestCase;
-require __DIR__ . "/../src/Creneau.php";
+require __DIR__ . "/../src/Model/Entretien/Creneau.php";
 
 class CreneauTest extends TestCase
 {
