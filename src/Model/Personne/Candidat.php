@@ -2,6 +2,8 @@
 
 namespace PlanificationEntretien;
 
+use phpDocumentor\Reflection\Types\Boolean;
+
 final class Candidat {
 
     private $nom;
@@ -17,35 +19,31 @@ final class Candidat {
         $this->experience = $experience;
     }
 
-    /**
-     * @return string
-     */
     public function getNom(): string
     {
         return $this->nom;
     }
 
-    /**
-     * @return string
-     */
     public function getPrenom(): string
     {
         return $this->prenom;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getSpecialite()
+    public function getSpecialite(): string
     {
         return $this->specialite;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getExperience()
+    public function getExperience(): int
     {
         return $this->experience;
+    }
+
+    public function isEqual(Candidat $candidat): bool
+    {
+        return ($this->getNom() == $candidat->getNom() &&
+            $this->getPrenom() == $candidat->getPrenom() &&
+            $this->getExperience() == $candidat->getExperience() &&
+            $this->getSpecialite() == $candidat->getSpecialite());
     }
 }

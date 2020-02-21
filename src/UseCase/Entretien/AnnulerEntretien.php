@@ -4,9 +4,11 @@ namespace PlanificationEntretien;
 
 class AnnulerEntretien
 {
-    public function annuler(Entretien $entretien, string $raison)
+    public static function annuler(Entretien $entretien, string $raison)
     {
         $entretien->setStatut(Entretien::ANNULE);
+        $entretien->libererRecruteur();
+        $entretien->libererSalle();
         $entretien->setRaison($raison);
     }
 }

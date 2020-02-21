@@ -29,4 +29,11 @@ final class Creneau {
     {
         return $this->heureFin;
     }
+
+    public function isEqual(Creneau $creneau): bool
+    {
+        return ($this->getDate() == $creneau->getDate() &&
+            $this->getHeureDebut() == $this->getHeureDebut() &&
+            $this->getHeureFin() == $creneau->getHeureFin());
+    }
 }

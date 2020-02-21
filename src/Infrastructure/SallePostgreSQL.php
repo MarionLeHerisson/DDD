@@ -26,21 +26,43 @@ class SallePostgreSQL implements Salles {
         return $this->salles;
     }
 
-    public function findByName(string $name): Salle
+    public function addSalle(Salle $salle)
     {
-        foreach ($this->findAll() as $salle) {
+        $this->salles[] = $salle;
+    }
+
+    public static function findByName(array $salles, string $name): ?Salle
+    {
+        foreach ($salles as $salle) {
             if ($salle->getName() == $name) {
                 return $salle;
             }
         }
+
+        return null;
     }
 
-    public function findByCapacite(int $capacite): Salle
+    public static function findByCapacite(array $salles, int $capacite): ?Salle
     {
-        foreach ($this->findAll() as $salle) {
+        foreach ($salles as $salle) {
             if ($salle->getCapacite() >= $capacite) {
                 return $salle;
             }
         }
+
+        return null;
+    }
+
+    public function findByCreneau(Creneau $creneau): array
+    {
+        $acc = [];
+
+        foreach ($this->findAll() as $salle) {
+            if (!in_array($creneau, $salle->getIndisponibilites())) {
+                $acc[] = $salle;
+            }
+        }
+
+        return $acc;
     }
 }

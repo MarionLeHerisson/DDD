@@ -4,13 +4,14 @@ use \PHPUnit\Framework\TestCase;
 use PlanificationEntretien\AnnulerEntretien;
 use PlanificationEntretien\Candidat;
 use PlanificationEntretien\ConfirmerEntretien;
-use PlanificationEntretien\ConsultantsRecruteurs;
 use PlanificationEntretien\Creneau;
 use PlanificationEntretien\Entretien;
 use PlanificationEntretien\PlanifierEntretien;
 use PlanificationEntretien\Salle;
 
 require __DIR__ . "/../src/Infrastructure/ConsultantRecruteurPostgreSQL.php";
+require __DIR__ . "/../src/Infrastructure/EntretienPostgreSQL.php";
+require __DIR__ . "/../src/Infrastructure/SallePostgreSQL.php";
 require __DIR__ . "/../src/Model/Entretien/Entretien.php";
 require __DIR__ . "/../src/Model/Entretien/EntretienID.php";
 require __DIR__ . "/../src/Model/Personne/Candidat.php";
@@ -26,70 +27,52 @@ class EntretienTest extends TestCase
 
     private $candidat;
     private $salle;
+    private $creneau;
 
     protected function setUp(): void
     {
         $this->candidat = new Candidat('Marion', 'Hurteau', 'PHP', 1);
         $this->salle = new Salle('B12', 23);
+        $this->creneau = new Creneau(self::DATE, self::DUREE);
     }
 
     public function testCreation() {
 
-        $creneau = new Creneau(self::DATE, self::DUREE);
-        $plannifierEntretien = new PlanifierEntretien();
-
-        $entretien = $plannifierEntretien->planifierEntretien($creneau, $this->candidat);
+        $entretien = PlanifierEntretien::planifierEntretien($this->creneau, $this->candidat);
 
         self::assertEquals(Entretien::PLANIFIE, $entretien->getStatut());
     }
 
     public function testConfirmation() {
-        $creneau = new Creneau(self::DATE, self::DUREE);
-        $planifierEntretien = new PlanifierEntretien();
-        $entretien = $planifierEntretien->planifierEntretien($creneau, $this->candidat);
+        $entretien = PlanifierEntretien::planifierEntretien($this->creneau, $this->candidat);
 
-        $confirmerEntretien = new ConfirmerEntretien();
-        $confirmerEntretien->confirmer($entretien);
+        ConfirmerEntretien::confirmer($entretien);
 
         self::assertEquals(Entretien::CONFIRME, $entretien->getStatut());
     }
 
     public function testAnnulation() {
-        $creneau = new Creneau(self::DATE, self::DUREE);
-        $planifierEntretien = new PlanifierEntretien();
-        $entretien = $planifierEntretien->planifierEntretien($creneau, $this->candidat);
+        $entretien = PlanifierEntretien::planifierEntretien($this->creneau, $this->candidat);
 
-        $annulerEntretien = new AnnulerEntretien();
-        $annulerEntretien->annuler($entretien, 'Empêchement');
+        AnnulerEntretien::annuler($entretien, 'Empêchement');
 
         self::assertEquals(Entretien::ANNULE, $entretien->getStatut());
     }
 
     public function testConfirmerEntretienAnnule() {
-        $creneau = new Creneau(self::DATE, self::DUREE);
-        $planifierEntretien = new PlanifierEntretien();
-        $entretien = $planifierEntretien->planifierEntretien($creneau, $this->candidat);
+        $entretien = PlanifierEntretien::planifierEntretien($this->creneau, $this->candidat);
 
-        $annulerEntretien = new AnnulerEntretien();
-        $confirmerEntretien = new ConfirmerEntretien();
-
-        $annulerEntretien->annuler($entretien, 'Empêchement');
-        $confirmerEntretien->confirmer($entretien);
+        AnnulerEntretien::annuler($entretien, 'Empêchement');
+        ConfirmerEntretien::confirmer($entretien);
 
         self::assertEquals(Entretien::ANNULE, $entretien->getStatut());
     }
 
     public function testAnnulerEntretienConfirme() {
-        $creneau = new Creneau(self::DATE, self::DUREE);
-        $planifierEntretien = new PlanifierEntretien();
-        $entretien = $planifierEntretien->planifierEntretien($creneau, $this->candidat);
+        $entretien = PlanifierEntretien::planifierEntretien($this->creneau, $this->candidat);
 
-
-        $annulerEntretien = new AnnulerEntretien();
-        $confirmerEntretien = new ConfirmerEntretien();
-
-        $confirmerEntretien->confirmer($entretien);
-        $annulerEntretien->annuler($entretien, 'Empêchement');
+        ConfirmerEntretien::confirmer($entretien);
+        AnnulerEntretien::annuler($entretien, 'Empêchement');
 
         self::assertEquals(Entretien::ANNULE, $entretien->getStatut());
     }

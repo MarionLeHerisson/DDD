@@ -33,14 +33,14 @@ class ConsultantRecruteurPostgreSQL implements ConsultantsRecruteurs {
         unset($this->consultantsRecruteurs[$consultantRecruteur->getNomComplet()]);
     }
 
-    public function findByNomComplet(string $nomComplet): ?ConsultantRecruteur
+    public function findByNomComplet(array $consultantsRecruteurs, string $nomComplet): ?ConsultantRecruteur
     {
-        return isset($this->consultantsRecruteurs[$nomComplet]) ? $this->consultantsRecruteurs[$nomComplet] : null;
+        return isset($consultantsRecruteurs[$nomComplet]) ? $consultantsRecruteurs[$nomComplet] : null;
     }
 
-    public function findBySpecialite(string $specialite): ?ConsultantRecruteur
+    public function findBySpecialite(array $consultantsRecruteurs, string $specialite): ?ConsultantRecruteur
     {
-        foreach ($this->consultantsRecruteurs as $cr) {
+        foreach ($consultantsRecruteurs as $cr) {
             if ($cr->getSpecialite() == $specialite) {
                 return $cr;
             }
@@ -49,9 +49,9 @@ class ConsultantRecruteurPostgreSQL implements ConsultantsRecruteurs {
         return null;
     }
 
-    public function findByExperience(int $experience): ?ConsultantRecruteur
+    public function findByExperience(array $consultantsRecruteurs, int $experience): ?ConsultantRecruteur
     {
-        foreach ($this->consultantsRecruteurs as $cr) {
+        foreach ($consultantsRecruteurs as $cr) {
             if ($cr->getExperience() >= $experience) {
                 return $cr;
             }
@@ -60,10 +60,22 @@ class ConsultantRecruteurPostgreSQL implements ConsultantsRecruteurs {
         return null;
     }
 
-
-    public function findBySpecialiteAndExperience(string $specialite, int $experience): ConsultantRecruteur
+    public function findByCreneau(Creneau $creneau): array
     {
-        foreach ($this->consultantsRecruteurs as $cr) {
+        $acc = [];
+
+        foreach ($this->findAll() as $consultantRecruteur) {
+            if (!in_array($creneau, $consultantRecruteur->getIndisponibilites())) {
+                $acc[] = $consultantRecruteur;
+            }
+        }
+
+        return $acc;
+    }
+
+    public function findBySpecialiteAndExperience(array $consultantsRecruteurs, string $specialite, int $experience): ?ConsultantRecruteur
+    {
+        foreach ($consultantsRecruteurs as $cr) {
             if ($cr->getExperience() >= $experience && $cr->getSpecialite() == $specialite) {
                 return $cr;
             }

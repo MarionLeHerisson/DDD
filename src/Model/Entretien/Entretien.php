@@ -16,8 +16,10 @@ class Entretien
     private $salle;
     private $raison;
 
-    public function __construct($creneau, $salle, $candidat, $consultantRecruteur)
+    public function __construct(Creneau $creneau, Salle $salle, Candidat $candidat, ConsultantRecruteur $consultantRecruteur)
     {
+        $salle->reserverSalle($creneau);
+
         $this->id        = new EntretienID();
         $this->statut    = self::PLANIFIE;
         $this->creneau   = $creneau;
@@ -25,16 +27,6 @@ class Entretien
         $this->candidat  = $candidat;
         $this->salle     = $salle;
         $this->raison    = null;
-    }
-
-    public function getId(): EntretienID
-    {
-        return $this->id;
-    }
-
-    public function setId(EntretienID $id): void
-    {
-        $this->id = $id;
     }
 
     public function getStatut(): string
@@ -77,6 +69,11 @@ class Entretien
         $this->candidat = $candidat;
     }
 
+    public function getSalle(): Salle
+    {
+        return $this->salle;
+    }
+
     public function getRaison(): string
     {
         return $this->raison;
@@ -85,5 +82,15 @@ class Entretien
     public function setRaison(string $raison): void
     {
         $this->raison = $raison;
+    }
+
+    public function libererRecruteur()
+    {
+        $this->recruteur->libererCreneau($this->creneau);
+    }
+
+    public function libererSalle()
+    {
+        $this->salle->libererCreneau($this->creneau);
     }
 }
