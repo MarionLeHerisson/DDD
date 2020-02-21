@@ -2,8 +2,6 @@
 
 namespace PlanificationEntretien;
 
-use phpDocumentor\Reflection\Types\Boolean;
-
 final class Candidat {
 
     private $nom;

@@ -2,8 +2,6 @@
 
 namespace PlanificationEntretien;
 
-use phpDocumentor\Reflection\Types\Boolean;
-
 final class ConsultantRecruteur {
 
     const NOM_DIRECTEUR = 'Anatole Zhâ';

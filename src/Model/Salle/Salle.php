@@ -2,8 +2,6 @@
 
 namespace PlanificationEntretien;
 
-use phpDocumentor\Reflection\Types\Boolean;
-
 class Salle {
     const DEFAULT_SALLE = 'A01';
 
@@ -39,7 +37,7 @@ class Salle {
             $this->getName() == $salle->getName());
     }
 
-    public static function trouverSalle(int $capacite, Creneau $creneau)
+    public static function trouverSalle(int $capacite, Creneau $creneau): ?Salle
     {
         $repository = new SallePostgreSQL();
         $salles = $repository->findByCreneau($creneau);
